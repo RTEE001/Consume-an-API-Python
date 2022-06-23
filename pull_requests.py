@@ -2,20 +2,25 @@ import requests
 import json
 
 
+def get_pull_requests(owner, repo_name, start_date, end_date):
 
-def get_pull_requests(owner, repo_name,start_date,end_date):
-             
-   api = f"https://api.github.com/repos/{owner}/{repo_name}/pulls"
+      api = f"https://api.github.com/repos/{owner}/{repo_name}/pulls?state=all"
+      raw_data = (requests.get(api)).json()
+      data1 = json.dumps(raw_data, sort_keys=True)
+      data = json.loads(data1)
+      req = []
 
-   daya = (requests.get(api)).json()
+      for each in data:
+         if start_date <= each.get("created_at")[:10] <= end_date:
+               req.append(
+                  {
+                     "id": each.get("id"),
+                     "user": each.get("user")["login"],
+                     "title": each.get("title"),
+                     "state": each.get("state"),
+                     "created_at": each.get("created_at")[:10],
+                  }
+               )
+      return json.dumps(req, indent = 4)
 
-   data1 = json.dumps(daya,indent = 4)
-   data = json.loads(data1)
-   # print(data1)
-   # print("------")
-   for each in data:
-          if start_date <= each.get("created_at")[:10] <= end_date:
-            print(each.get("id"))
-   
-get_pull_requests("rtee001", "trial","2022-06-22","2022-06-23")
-   
+print(get_pull_requests("Umuzi-org", "ACN-syllabus", "2022-06-01", "2022-06-30"))
