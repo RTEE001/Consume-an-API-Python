@@ -1,12 +1,11 @@
 import requests
 import json
 
-
 def get_pull_requests(owner, repo_name, start_date, end_date):
 
       api = f"https://api.github.com/repos/{owner}/{repo_name}/pulls?state=all"
       raw_data = (requests.get(api)).json()
-      data1 = json.dumps(raw_data, sort_keys=True)
+      data1 = json.dumps(raw_data)
       data = json.loads(data1)
       req = []
 
@@ -23,4 +22,4 @@ def get_pull_requests(owner, repo_name, start_date, end_date):
                )
       return json.dumps(req, indent = 4)
 
-print(get_pull_requests("Umuzi-org", "ACN-syllabus", "2022-06-01", "2022-06-30"))
+print(get_pull_requests("Umuzi-org", "ACN-syllabus", "2022-03-01", "2022-03-10"))
