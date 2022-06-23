@@ -3,7 +3,7 @@ import json
 
 
 
-def get_pull_requests(owner, repo_name):
+def get_pull_requests(owner, repo_name,start_date,end_date):
              
    api = f"https://api.github.com/repos/{owner}/{repo_name}/pulls"
 
@@ -14,7 +14,8 @@ def get_pull_requests(owner, repo_name):
    # print(data1)
    # print("------")
    for each in data:
-          print(each.get("id"))
+          if start_date <= each.get("created_at")[:10] <= end_date:
+            print(each.get("id"))
    
-get_pull_requests("rtee001", "trial")
+get_pull_requests("rtee001", "trial","2022-06-22","2022-06-23")
    
