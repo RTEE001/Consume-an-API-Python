@@ -1,25 +1,31 @@
 import requests
 import json
 
+
 def get_pull_requests(owner, repo_name, start_date, end_date):
-
-      api = f"https://api.github.com/repos/{owner}/{repo_name}/pulls?state=all"
-      raw_data = (requests.get(api)).json()
-      data1 = json.dumps(raw_data)
-      data = json.loads(data1)
-      req = []
-
-      for each in data:
-         if start_date <= each.get("created_at")[:10] <= end_date:
-               req.append(
+       
+   url = f"https://api.github.com/repos/{owner}/{repo_name}/pulls?state=all" 
+   url_response=requests.get(url)
+   repos=url_response.json()
+   pull_details = []
+   
+   while 'next' in url_response.links.keys():
+      json_data = json.dumps(repos, indent =4)
+      python_data = json.loads(json_data)
+      
+      for each_object in python_data:
+         if start_date <= each_object.get("created_at")[:10] <= end_date:
+               pull_details.append(
                   {
-                     "id": each.get("id"),
-                     "user": each.get("user")["login"],
-                     "title": each.get("title"),
-                     "state": each.get("state"),
-                     "created_at": each.get("created_at")[:10],
+                     "id": each_object.get("id"),
+                     "user": each_object.get("user")["login"],
+                     "title": each_object.get("title"),
+                     "state": each_object.get("state"),
+                     "created_at": each_object.get("created_at")[:10],
                   }
                )
-      return json.dumps(req, indent = 4)
+      url_response=requests.get(url_response.links['next']['url'])
+      repos.extend(url_response.json())
+      
+   return pull_details
 
-print(get_pull_requests("Umuzi-org", "ACN-syllabus", "2022-03-01", "2022-03-10"))
