@@ -13,7 +13,6 @@ def get_pull_requests(owner, repo_name, start_date, end_date):
     pull_details = []
 
     if "message" in repos:
-            print(repos["message"])
             raise Exception("Error 404 User or Repo Not Found")
     else:
         another_page= True
