@@ -52,13 +52,20 @@ def get_pull_requests(owner, repo_name, start_date, end_date):
             python_data = json.loads(json_data)
             for each_object in python_data:
                 if (
-                    start_date <= each_object.get("created_at")[:10] <= end_date
+                    each_object.get("created_at") != None
+                    and start_date <= each_object.get("created_at")[:10] <= end_date
                     or (
                         each_object.get("merged_at") != None
                         and start_date <= each_object.get("merged_at")[:10] <= end_date
                     )
-                    or start_date <= each_object.get("updated_at")[:10] <= end_date
-                    or start_date <= each_object.get("closed_at")[:10] <= end_date
+                    or (
+                        each_object.get("updated_at") != None
+                        and start_date <= each_object.get("updated_at")[:10] <= end_date
+                    )
+                    or (
+                        each_object.get("closed_at") != None
+                        and start_date <= each_object.get("closed_at")[:10] <= end_date
+                    )
                 ):
                     if each_object.get("id") in [item["id"] for item in pull_details]:
                         pass
