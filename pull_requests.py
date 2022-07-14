@@ -81,4 +81,4 @@ def get_pull_requests(owner, repo_name, start_date, end_date):
                 url_response = requests.get(url_response.links["next"]["url"])
                 repos = url_response.json()
 
-    return len(pull_details)
+    return pull_details
