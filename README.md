@@ -1,3 +1,7 @@
+Consume Github API (186)
+For raw project instructions see: http://syllabus.africacode.net/projects/github-api-consume/
+
+
 To set up tokens for the function, you need to:
 
 -Log into your github
